@@ -1,0 +1,14 @@
+type Dividend @entity {
+  id: ID! #SC address
+  token: Bytes!
+  packable: Bytes!
+  packableId: Bytes!
+  transfers: BigInt!
+  supply: BigInt!
+  holders: BigInt!
+  payAmount: BigInt!
+  isConfigured: Boolean!
+  isPaying: Boolean!
+  index: BigInt!
+  isFinished: Boolean!
+}

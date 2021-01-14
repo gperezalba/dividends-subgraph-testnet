@@ -1,0 +1,48 @@
+specVersion: 0.0.2
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: Factory
+    network: mainnet
+    source:
+      address: "0xd864aD84602FE08492Bd058cD6aBc47e82CcFF0A"
+      abi: Factory
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.3
+      language: wasm/assemblyscript
+      entities:
+        - Deploy
+      abis:
+        - name: Factory
+          file: ./abis/Factory.json
+      eventHandlers:
+        - event: Deploy(indexed address,indexed address,bytes32,indexed address)
+          handler: handleDeploy
+      file: ./src/factory.ts
+templates:
+  - name: Dividend
+    kind: ethereum/contract
+    network: mainnet
+    source:
+      abi: Dividend
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.1
+      language: wasm/assemblyscript
+      file: ./src/dividend.ts
+      entities:
+        - Transfer
+      abis:
+        - name: Dividend
+          file: ./abis/Dividend.json
+      eventHandlers:
+        - event: HoldersUpdate(uint256,uint256,uint256)
+          handler: handleHoldersUpdate
+        - event: ConfigPay(indexed address,uint256)
+          handler: handleConfigPay
+        - event: PayUpdate(uint256)
+          handler: handlePayUpdate
+        - event: PayFinish()
+          handler: handlePayFinish
